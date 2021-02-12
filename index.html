@@ -6,8 +6,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>finances</title>
     <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" type="text/css" href="dark.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,400;1,100;1,400;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,400;1,100;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+        integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
+
+    <script type="text/javascript">
+
+        document.addEventListener("DOMContentLoaded", function (event) {
+            document.documentElement.setAttribute("data-theme", "light");
+
+
+            var themeSwitcher = document.getElementById("theme-switcher");
+
+
+            themeSwitcher.onclick = function () {
+
+                var currentTheme = document.documentElement.getAttribute("data-theme");
+
+
+                var switchToTheme = currentTheme === "dark" ? "light" : "dark"
+
+                document.documentElement.setAttribute("data-theme", switchToTheme);
+            }
+        });
+    </script>
 </head>
 
 <body>
@@ -15,9 +41,12 @@
     <header>
         <img src="./assets/logo.svg" alt="Logo Dev Finance">
     </header>
+  
+    
 
     <main class="container">
         <section id="balance">
+
             <h2 class="sr-only">Balanço</h2>
 
             <div class="card">
@@ -40,7 +69,7 @@
                 <p id="expenseDisplay"></p>
             </div>
 
-            <div class="card total">
+            <div class="card total" id="total-card">
                 <h3>
                     <span>
                         Total
@@ -49,29 +78,36 @@
                 </h3>
                 <p id="totalDisplay"></p>
             </div>
-            
+
         </section>
 
         <section id="transaction">
             <h2 class="sr-only">Transações</h2>
+            <div class="top-table">
+            <a href="#" onclick="Modal.open()" class="button new"> <img id="addiction" src="./assets/cirar.svg"
+                    alt="nova transação"></a> 
+                    <div class="dark-switch">
+                        <label class="switch">
+                            <input type="checkbox" id="theme-switcher" >
+                            <span class="slider round"></span>
+                          </label>
+                      </div>
+                    </div>
+            <div id="customers">
+                <table id="data-table">
+                    <thead>
+                        <tr>
+                            <th>Descrição</th>
+                            <th>Valor</th>
+                            <th>Data</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-            <a href="#" 
-            onclick="Modal.open()"
-            class="button new">+ Nova Transação</a>
-            
-            <table id="data-table">
-                <thead>
-                    <tr>
-                        <th>Descrição</th>
-                        <th>Valor</th>
-                        <th>Data</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </section>
     </main>
 
@@ -81,61 +117,48 @@
                 <h2>Nova Transação</h2>
                 <form action="" onsubmit="Form.submit(event)">
                     <div class="input-group">
-                        <label 
-                            class="sr-only" 
-                            for="description">Descrição</label>
-                        <input 
-                            type="text" 
-                            id="description" 
-                            name="description"
-                            placeholder="Descrição"
-                        />
+                        <label class="sr-only" for="description">Descrição</label>
+                        <input type="text" id="description" name="description" placeholder="Descrição" />
                     </div>
 
                     <div class="input-group">
-                        <label 
-                            class="sr-only" 
-                            for="amount">Valor</label>
-                        <input 
-                            type="number"
-                            step="0.01"
-                            id="amount" 
-                            name="amount"
-                            placeholder="0,00"
-                        />
-                        <small class="help">Use o sinal - (negativo) para despesas e , (vírgula) para casas decimais</small>
+                        <label class="sr-only" for="amount">Valor</label>
+                        <input type="number" step="0.01" id="amount" name="amount" placeholder="0,00" />
+                        <small class="help">Use o sinal - (negativo) para despesas e , (vírgula) para casas
+                            decimais</small>
                     </div>
 
                     <div class="input-group">
-                        <label 
-                            class="sr-only" 
-                            for="date">Data</label>
-                        <input 
-                            type="date" 
-                            id="date" 
-                            name="date"
-                        />
+                        <label class="sr-only" for="date">Data</label>
+                        <input type="date" id="date" name="date" />
                     </div>
 
                     <div class="input-group actions">
-                        <a 
-                        onclick="Modal.close()"
-                        href="#" 
-                        class="button cancel">Cancelar</a>
+                        <a onclick="Modal.close()" href="#" class="button cancel">Cancelar</a>
                         <button>Salvar</button>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>
+    <div class="download-button">
+        <a href="javascript:downloadtable()"><img src="./assets/download.svg" alt="download"></a>
+    </div>
+    </div>
 
-    <footer><p>2021 dev.finance$</p></footer>
-
-   
-    <script src="./script.js"></script>
-
-
+    <footer>
+        <p>2021 dev.finance$</p>
+    </footer>
 
 </body>
+<script type="text/javascript">
+    // Wait for document to load
+    document.addEventListener("DOMContentLoaded", function (event) {
+        document.documentElement.setAttribute("data-theme", "light");
+        
+    });
+</script>
+<script src="./script.js"></script>
 
 </html>

@@ -89,7 +89,8 @@ const DOM = {
         const CSSclass = transaction.amount > 0 ? "income" : "expense"
         const amount = Utils.formatCurrency(transaction.amount)
         const html = `
-            <td class="description">${transaction.description}</td>
+            
+            <td id="content" class="description">${transaction.description}</td>
             <td class=${CSSclass}>${amount}</td>
             <td class="date">${transaction.date}</td>
             <td>
@@ -97,7 +98,7 @@ const DOM = {
             </td> `
          return html
     },
-
+    
     updateBalance(){
         document.getElementById("incomeDisplay")
         .innerHTML = Utils.formatCurrency(Transaction.incomes()) 
@@ -202,10 +203,6 @@ const Form = {
 }
 
 
-
-
-
-
 const App = {
     init(){
         Transaction.all.forEach(DOM.addTransaction)
@@ -222,4 +219,36 @@ const App = {
 
 App.init()
  
+
+function downloadtable() {
+    var pdf = new jsPDF('p', 'pt', 'letter');
+ 
+    source = $('#customers')[0];
+
+    specialElementHandlers = {
+     
+        '#bypassme': function(element, renderer) {
+           
+            return true
+        }
+    };
+    margins = {
+        top: 80,
+        bottom: 60,
+        left: 40,
+        width: 522
+    };
    
+    pdf.fromHTML(
+            source, // HTML string or DOM elem ref.
+            margins.left, // x coord
+            margins.top, {// y coord
+                'width': margins.width, // max width of content on PDF
+                'elementHandlers': specialElementHandlers
+            },
+    function(dispose) {
+       
+        pdf.save('Test.pdf');
+    }
+    , margins);
+}
