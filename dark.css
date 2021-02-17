@@ -17,6 +17,7 @@ body {
     --background-color: #3F3F3F;
     --card-color-dark:#272727;
     --text-color: #fff;
+    --dark-blue: #ffffff;
     
   }
 
@@ -24,5 +25,6 @@ body {
     --background-color: #e6e6e6;
     --card-color-dark:#ffffff;
     --text-color: rgb(71, 71, 71);
+    --dark-blue: #363f5f;
     
   }

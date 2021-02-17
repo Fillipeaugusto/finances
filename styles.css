@@ -232,7 +232,7 @@ td.expense {
 }
 
 .modal {
-    background: #F0F2f5;
+    background: var(--background-color);
     padding: 2.4rem;
 
     position: relative;
